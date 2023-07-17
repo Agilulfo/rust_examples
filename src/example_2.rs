@@ -1,12 +1,12 @@
 pub fn run() {
-    let mut quote = String::from("this was ");
+    let mut x: i8 = 10;
 
-    println!("{}", quote);
-    append(&mut quote, "incomplete");
-    println!("{}", quote);
+    println!("initially x is: {}", x);
+    add_one(&mut x);
+    println!("then x is: {}", x);
 }
 
-fn append(sentence: &mut String, ending: &str) {
-    sentence.push_str(ending);
-    println!("{}", sentence);
+fn add_one(item: &mut i8) {
+    *item = *item + 1;
+    println!("changin copy of x to: {}", item);
 }
