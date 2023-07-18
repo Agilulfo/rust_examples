@@ -16,6 +16,8 @@ fn add_one(item: &mut i8) {
     // as far as I understand * is the dereferencing operator
     // here we need to dereference the reference if
     // we want to access his value
+    // first metioned in a note in:
+    // https://doc.rust-lang.org/stable/book/ch04-02-references-and-borrowing.html
     *item = *item + 1;
 
     // why don't we need to dereference in here?
