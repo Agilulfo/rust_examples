@@ -6,6 +6,7 @@ mod example_04;
 mod example_05;
 // mod example_06;
 mod example_07;
+mod example_08;
 
 fn main() {
     // pass a value to a fucion that makes a copy
@@ -32,6 +33,9 @@ fn main() {
 
     title(7);
     example_07::run();
+
+    title(8);
+    example_08::run();
 }
 
 fn title(number: u8) {
