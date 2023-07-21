@@ -54,7 +54,6 @@ mod mod_a {
         // this function can call private functions
         // in the same module and in the parent modules
         pub fn call_priv_fns(caller: String) {
-
             super::a_private_function(caller.clone() + ">call_priv_fns");
             b_private_function(caller + ">call_priv_fns");
         }
