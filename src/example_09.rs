@@ -47,16 +47,21 @@ mod game {
         }
         pub fn run(&mut self) {
             while self.reserve.value() != 0 {
-                let mut player = self.player_queue.pop_front().unwrap();
-                // in theory here it would be convenient to have all players
-                // share a mutable reference to the reserve so that it is not
-                // necessary to pass it around everytime
-                // however I think that rust does not allows it because of the
-                // ownership rules. Wondering if there is a smart way to
-                // have both benefits
-                player.play(&mut self.reserve);
-                self.player_queue.push_back(player);
+                let player = self.next_player();
+                let reserve = self.mut_reserve();
+
+                player.play(reserve);
             }
+        }
+
+        fn next_player(&mut self)-> &mut Player {
+            let player = self.player_queue.pop_front().unwrap();
+            self.player_queue.push_back(player);
+            self.player_queue.back_mut().unwrap()
+        }
+
+        fn mut_reserve(&mut self) -> &mut Reserve {
+            &mut self.reserve
         }
     }
 }
