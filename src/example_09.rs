@@ -16,8 +16,8 @@ mod game {
     impl Game {
         pub fn new() -> Game {
             let mut queue = VecDeque::new();
-            queue.push_back(Player::new());
-            queue.push_back(Player::new());
+            queue.push_back(Player::new(String::from("Alice")));
+            queue.push_back(Player::new(String::from("Bob")));
             let reserve = Reserve::new(10);
 
             Game {
@@ -89,16 +89,19 @@ mod player {
     use std::cmp;
 
     pub struct Player {
+        name: String,
         score: u8,
     }
 
     impl Player {
-        pub fn new() -> Player {
-            Player { score: 0 }
+        pub fn new(name: String) -> Player {
+            Player { score: 0, name }
         }
 
         pub fn play(&mut self, reserve: &mut super::reserve::Reserve) {
             let mut value = roll_d6();
+
+            println!("{} rolled {}", self.name, value);
             match reserve.take(value) {
                 Some(value) => {
                     self.score += value;
@@ -120,7 +123,8 @@ mod player {
     mod player_test {
         #[test]
         fn play() {
-            let mut player = super::Player::new();
+            let mut player = super::Player::new(String::from("test"));
+            // interesting that super::super works!
             let mut reserve = super::super::reserve::Reserve::new(10);
             let original_value = reserve.value();
             player.play(&mut reserve);
