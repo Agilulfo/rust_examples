@@ -1,4 +1,12 @@
 pub fn run() {
+    // Little game that consist in a storage of n items.
+    // Players in turn roll a d6 dice and  take the resulting
+    // number of items only if that number of items is available.
+    // If not enough items are available in the storage, the player has to pay
+    // back up to that number of items if he posses any.
+    // The game ends when a player rolls a dice that empties the storage.
+    // nobody wins... :-p
+
     let mut game = game::Game::new();
     game.run();
 }
@@ -15,7 +23,19 @@ mod game {
 
     impl Game {
         pub fn new() -> Game {
+            // Using here a queue to simulate a circular list.
+            // players are removed from one side and inserted back
+            // on the other side to keep the turn order
+            // curious to know if there is an easy way
+            // to have a more efficient circular list
+            // maybe it is possible to build a custom iterator
+            // that loops over and over a simple Vec.
+
             let mut queue = VecDeque::new();
+
+            // TODO.. here I've initally tried to pass a string slice (&str)
+            // but got a compiler error related to lifetime
+            // maybe you can pass such value but a variable needs to be defined
             queue.push_back(Player::new(String::from("Alice")));
             queue.push_back(Player::new(String::from("Bob")));
             let reserve = Reserve::new(10);
@@ -28,6 +48,12 @@ mod game {
         pub fn run(&mut self) {
             while self.reserve.value() != 0 {
                 let mut player = self.player_queue.pop_front().unwrap();
+                // in theory here it would be convenient to have all players
+                // share a mutable reference to the reserve so that it is not
+                // necessary to pass it around everytime
+                // however I think that rust does not allows it because of the
+                // ownership rules. Wondering if there is a smart way to
+                // have both benefits
                 player.play(&mut self.reserve);
                 self.player_queue.push_back(player);
             }
